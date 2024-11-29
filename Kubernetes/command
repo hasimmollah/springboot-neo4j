@@ -1,0 +1,18 @@
+minikube start --nodes 2 --vm-driver=docker -p db-cluster -- for database
+minikube start --nodes 3 --vm-driver=docker-p app-cluster  -- for database
+kubectl config get-contexts
+kubectl config use-context db-cluster
+kubectl config get-context app-cluster
+kubectl apply -f app-namespace.yml --context app-cluster 
+kubectl apply -f db-namespace.yml --context db-cluster 
+minikube delete --all
+minikube delete --profile db-cluster
+helm install neo4j ./neo4j-chart -f ./neo4j-chart/values.yaml
+helm unstall neo4j
+kubectl describe statefulset --namespace neo4j-dev-namespace
+helm template neo4j ./neo4j-chart --values ./neo4j-chart/values.yaml --namespace neo4j-dev-namespace
+kubectl logs -p neo4j-statefulset-1 --namespace neo4j-dev-namespace
+helm install ingress-nginx ingress-nginx/ingress-nginx --namespace neo4j-dev-namespace -f values.yaml
+helm install ingress-nginx ingress-nginx/ingress-nginx --namespace neo4j-dev-namespace
+
+kubectl port-forward service/neo4j-service 7474:7474 --namespace neo4j-dev-namespace

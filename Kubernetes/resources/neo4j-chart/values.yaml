@@ -1,0 +1,17 @@
+namespace: neo4j-dev-namespace
+neo4j:
+  credential: "neo4j/password"
+  password: neo4j
+  boltPort: "7687"
+  httpPort: "7474"
+  nodeport:
+    http: 30000
+    bolt: 30001
+  host: neo4j.dev-cluster.local
+  pv:
+    storage: 1Gi
+    access: ReadWriteOnce
+    recpolicy: Retain
+    storageclass: standard
+    hostpath: "/mnt/data/neo4j"
+    

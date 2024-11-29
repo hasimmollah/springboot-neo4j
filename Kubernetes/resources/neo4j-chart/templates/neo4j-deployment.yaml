@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: neo4j-statefulset
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: neo4j # has to match .spec.template.metadata.labels
+  serviceName: "neo4j-service"
+  replicas: 1 # by default is 1
+  minReadySeconds: 10 # by default is 0
+  template:
+    metadata:
+      labels:
+        app: neo4j # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: neo4j
+        image: neo4j:latest
+        ports:
+        - containerPort: {{ .Values.neo4j.boltPort | int }}
+          name: bolt
+        - containerPort: {{ .Values.neo4j.httpPort | int }}
+          name: http
+        env:
+        - name: NEO4J_AUTH
+          valueFrom: 
+            secretKeyRef:
+              name: neo4j-secret
+              key: NEO4J_CREDENTIAL			  
+        volumeMounts:
+        - name: neo4j-data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: neo4j-data
+    spec:
+      accessModes: [ {{ .Values.neo4j.pv.access }} ]
+      storageClassName: {{ .Values.neo4j.pv.storageclass }}
+      resources:
+        requests:
+          storage: {{ .Values.neo4j.pv.storage }}             
