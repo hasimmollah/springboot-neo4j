@@ -1,4 +1,6 @@
 namespace: neo4j-dev-namespace
+ingress:
+  enabled: true
 neo4j:
   credential: "neo4j/password"
   password: neo4j

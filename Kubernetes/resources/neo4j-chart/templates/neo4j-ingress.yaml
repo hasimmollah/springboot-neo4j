@@ -5,16 +5,28 @@ metadata:
   namespace: {{ .Values.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"  # This is for HTTP paths
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"  # Required for WebSocket
+    nginx.ingress.kubernetes.io/enable-websocket: "true"   # Enable WebSocket support
 spec:
-  ingressClassName: neo4j-nginx
+  ingressClassName: nginx
   rules:
-  - host: {{ .Values.neo4j.host }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: neo4j-service
-            port:
-              number: {{ .Values.neo4j.httpPort | int }}
+    - host: {{ .Values.neo4j.host }}   # Replace with your domain or IP
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: neo4j-service
+                port:
+                  number: {{ .Values.neo4j.httpPort | int }}  # HTTP port for Neo4j
+          - path: /bolt
+            pathType: Prefix
+            backend:
+              service:
+                name: neo4j-service
+                port:
+                  number: {{ .Values.neo4j.boltPort | int }}  # Bolt port for Neo4j

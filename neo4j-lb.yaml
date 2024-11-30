@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: neo4j-lb
+  namespace: neo4j-dev-namespace
+spec:
+  selector:
+    app: neo4j
+  ports:
+    - port: 7474    # HTTP Browser port
+      targetPort: 7474
+      name: http
+    - port: 7687    # Bolt port
+      targetPort: 7687
+      name: bolt
+  type: LoadBalancer
