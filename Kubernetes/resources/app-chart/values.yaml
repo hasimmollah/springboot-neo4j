@@ -1,8 +1,10 @@
 namespace: app-dev-namespace
+name: app
 app:
   httpPort: 8080
   host: app.dev-cluster.local
   image:
+    name: hasim601/springboot-neo4j
     version: latest
 ingress:
   enabled: true

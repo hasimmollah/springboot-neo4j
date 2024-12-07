@@ -6,10 +6,9 @@ import com.hasim.springboot.neo4j.example.dto.EmployeeDto;
 import com.hasim.springboot.neo4j.example.dto.EmployeeRequest;
 import com.hasim.springboot.neo4j.example.service.DepartmentService;
 import com.hasim.springboot.neo4j.example.service.EmployeeService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +23,8 @@ public class DepartmentController {
     }
 
     @PostMapping("/departments/department")
-    DepartmentDto save(DepartmentDto departmentDto) {
-        return departmentService.save(departmentDto);
+    ResponseEntity<DepartmentDto> save(@RequestBody DepartmentDto departmentDto) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(departmentService.save(departmentDto));
     }
     }

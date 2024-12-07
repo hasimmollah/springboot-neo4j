@@ -4,7 +4,10 @@ import com.hasim.springboot.neo4j.example.dto.DepartmentDto;
 import com.hasim.springboot.neo4j.example.dto.PositionDto;
 import com.hasim.springboot.neo4j.example.service.DepartmentService;
 import com.hasim.springboot.neo4j.example.service.PositionService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -18,7 +21,8 @@ public class PositionController {
     }
 
     @PostMapping("/positions/position")
-    PositionDto save(PositionDto positionDto) {
-        return positionService.save(positionDto);
+    ResponseEntity<PositionDto> save(@RequestBody PositionDto positionDto) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(positionService.save(positionDto));
     }
     }

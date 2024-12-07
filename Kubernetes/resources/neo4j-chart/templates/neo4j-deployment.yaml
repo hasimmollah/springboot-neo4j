@@ -6,19 +6,19 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: neo4j # has to match .spec.template.metadata.labels
+      app: {{ .Values.name }} # has to match .spec.template.metadata.labels
   serviceName: "neo4j-service"
   replicas: 1 # by default is 1
   minReadySeconds: 10 # by default is 0
   template:
     metadata:
       labels:
-        app: neo4j # has to match .spec.selector.matchLabels
+        app: {{ .Values.name }} # has to match .spec.selector.matchLabels
     spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: neo4j
-        image: neo4j:latest
+        image: {{ .Values.neo4j.image.name }}:{{ .Values.neo4j.image.version }}
         ports:
         - containerPort: {{ .Values.neo4j.boltPort | int }}
           name: bolt

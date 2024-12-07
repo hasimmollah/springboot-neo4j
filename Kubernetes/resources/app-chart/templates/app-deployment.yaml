@@ -6,18 +6,18 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: app # has to match .spec.template.metadata.labels
+      app: {{ .Values.name }} # has to match .spec.template.metadata.labels
   replicas: 2 # by default is 1
   minReadySeconds: 10 # by default is 0
   template:
     metadata:
       labels:
-        app: app # has to match .spec.selector.matchLabels
+        app: {{ .Values.name }} # has to match .spec.selector.matchLabels
     spec:
       terminationGracePeriodSeconds: 10
       containers:
-      - name: app
-        image:  hasim601/springboot-neo4j:{{ .Values.app.image.version }}
+      - name: {{ .Values.name }}
+        image:  {{ .Values.app.image.name }}:{{ .Values.app.image.version }}
         env:
         - name: NEO4J_USER
           valueFrom: 

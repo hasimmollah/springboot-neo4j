@@ -6,7 +6,7 @@ metadata:
 spec:
   clusterIP: None  # Headless service with no ClusterIP
   selector:
-    app: neo4j
+    app: {{ .Values.name }}
   ports:
     - name: bolt
       port: {{ .Values.neo4j.boltPort | int }}  # Neo4j Bolt port

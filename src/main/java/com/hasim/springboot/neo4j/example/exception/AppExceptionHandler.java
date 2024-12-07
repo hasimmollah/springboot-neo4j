@@ -10,26 +10,25 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class AppExceptionHandler {
     @ExceptionHandler(ApplicationException.class)
-    public ResponseEntity<String> handleResourceNotFoundException(ApplicationException ex) {
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ApplicationException ex) {
 
         ErrorResponse error = new ErrorResponse(
                 ErrorCodes.ENTITY_NOT_FOUND_EXCEPTION.getCode(),
                 ErrorCodes.ENTITY_NOT_FOUND_EXCEPTION.getDescription());
         log.error(ex.getMessage(), ex);
-        return new ResponseEntity(
-                error,
-                HttpStatus.NOT_FOUND);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(error);
     }
 
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGenericException(Exception ex) {
+    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         ErrorResponse error = new ErrorResponse(
                 ErrorCodes.APPLICATION_EXCEPTION.getCode(),
                 ErrorCodes.APPLICATION_EXCEPTION.getDescription());
         log.error(ex.getMessage(), ex);
-        return new ResponseEntity(
-                error,
-                HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(error);
     }
 }

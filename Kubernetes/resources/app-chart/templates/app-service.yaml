@@ -6,7 +6,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: app
+    app: {{ .Values.name }}
   ports:
     - name: http
       port: {{ .Values.app.httpPort | int }}  # Neo4j HTTP port
