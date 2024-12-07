@@ -12,4 +12,6 @@ import org.mapstruct.Mapper;
 public interface BaseMapper {
 
     BaseDto toDto(BaseEntity entity);
+
+    BaseEntity toEntity(BaseDto dto);
 }

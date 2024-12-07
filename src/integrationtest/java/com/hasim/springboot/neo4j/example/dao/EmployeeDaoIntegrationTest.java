@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -32,8 +33,9 @@ public class EmployeeDaoIntegrationTest extends Neo4jBaseIntegrationTest {
     protected void setup() {
 
         //save employee
-        Employee employee = EntityFactory.createEmployee(1, EMP_NAME,1,DEPT,1,EMP_POS);
-        Employee manager =EntityFactory.createEmployee(2, MANAGER_NAME,1,DEPT,2,MGR_POS);
+        String deptId = UUID.randomUUID().toString();
+        Employee employee = EntityFactory.createEmployee(UUID.randomUUID().toString(), EMP_NAME,deptId,DEPT,UUID.randomUUID().toString(),EMP_POS);
+        Employee manager =EntityFactory.createEmployee(UUID.randomUUID().toString(), MANAGER_NAME,deptId,DEPT,UUID.randomUUID().toString(),MGR_POS);
         employee.setManager(manager);
         employeeRepository.save(employee);
     }

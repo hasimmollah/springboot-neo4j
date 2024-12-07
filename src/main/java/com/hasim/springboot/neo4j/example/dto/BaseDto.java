@@ -1,16 +1,18 @@
 package com.hasim.springboot.neo4j.example.dto;
 
 
+import java.util.UUID;
+
 /**
  * @author Hasim Mollah
  */
 
 public class BaseDto {
-   public Integer getId() {
+   public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -22,6 +24,6 @@ public class BaseDto {
         this.name = name;
     }
 
-    private Integer id;
+    private String id;
     private String name;
 }

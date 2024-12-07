@@ -8,7 +8,7 @@ import com.hasim.springboot.neo4j.example.dao.EmployeeDao;
 import com.hasim.springboot.neo4j.example.dto.EmployeeDto;
 import com.hasim.springboot.neo4j.example.dto.EmployeeRequest;
 import com.hasim.springboot.neo4j.example.mapper.EmployeeMapper;
-import lombok.extern.log4j.Log4j;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.testcontainers.shaded.org.apache.commons.lang3.StringUtils;
@@ -16,6 +16,8 @@ import org.testcontainers.shaded.org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Hasim Mollah
  */
@@ -44,7 +46,7 @@ public class EmployeeService {
             log.debug(String.format("Fetching Employees for dept %s .", dept));
             result = employeeDao.findEmployeesByDepartment(dept).stream().map(employee->employeeMapper.toDto(employee)).toList();
         } else {
-            log.debug(String.format("Fetching all Employees"));
+            log.debug("Fetching all Employees");
             result = employeeRepository.findAll().stream().map(employee->employeeMapper.toDto(employee)).toList();
         }
         return result;
@@ -56,9 +58,30 @@ public class EmployeeService {
 
     public List<EmployeeDto> findByName(String name){
         List<Employee> employeeList = employeeDao.findEmployeesByName(name);
-        if(employeeList.size()==0){
+        if(employeeList.isEmpty()){
             throw new ApplicationException(String.format("No Employees with name %s .", name));
         }
-        return employeeList.stream().map(employee->employeeMapper.toDto(employee)).toList();
+        return employeeList.stream().map(employeeMapper::toDto).toList();
+    }
+
+    public List<EmployeeDto> search(EmployeeDto employeeDto, boolean validate){
+        List<Employee> employeeList = new ArrayList<>();
+        String name = employeeDto.getName();
+        String internalId = employeeDto.getId();
+        if(StringUtils.isNotBlank(employeeDto.getName())){
+            employeeList = employeeDao.findEmployeesByName(employeeDto.getName());
+        } else if(internalId != null) {
+            employeeList = employeeDao.findEmployeesById(employeeDto.getId());
+        }
+
+        if(validate && employeeList.isEmpty()){
+            throw new ApplicationException(String.format("No Employees with name %s , id %s .", name, internalId));
+        }
+        return employeeList.stream().map(employeeMapper::toDto).toList();
+    }
+
+    @Transactional
+    public EmployeeDto save(EmployeeDto employeeDto){
+       return employeeMapper.toDto( employeeRepository.save(employeeMapper.toEntity( employeeDto)));
     }
 }

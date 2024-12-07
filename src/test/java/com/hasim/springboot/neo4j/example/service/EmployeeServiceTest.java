@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static com.hasim.springboot.neo4j.example.data.DataFactory.createEmployee;
@@ -47,11 +48,11 @@ public class EmployeeServiceTest {
         employeeRequestWithManager.setManager("Abc");
         EmployeeRequest employeeRequestWithDept = new EmployeeRequest();
         employeeRequestWithDept.setDept("IT");
-        Integer empId = 1;
+        String empId = UUID.randomUUID().toString();
         String empName = "abc";
-        Integer deptId =1;
+        String deptId =UUID.randomUUID().toString();
         String deptName = "IT";
-        Integer posId = 1;
+        String posId = UUID.randomUUID().toString();
         String posName = "Dev";
 
         List<Employee> employees = List.of(createEmployee(empId, empName, deptId, deptName, posId, posName));

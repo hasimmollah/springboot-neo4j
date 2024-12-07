@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+  namespace: {{ .Values.namespace }}  # Specify your namespace
+spec:
+  type: LoadBalancer
+  selector:
+    app: app
+  ports:
+    - name: http
+      port: {{ .Values.app.httpPort | int }}  # Neo4j HTTP port
+      protocol: TCP

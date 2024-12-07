@@ -29,5 +29,15 @@ public class EmployeeDto extends BaseDto{
 
     private DepartmentDto department;
 
+    public EmployeeDto getManager() {
+        return manager;
+    }
+
+    public void setManager(EmployeeDto manager) {
+        this.manager = manager;
+    }
+
+    private EmployeeDto manager;
+
 
 }

@@ -1,20 +1,23 @@
 package com.hasim.springboot.neo4j.example.entity;
 
 
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
+
+import java.util.UUID;
 
 
 /**
  * @author Hasim Mollah
  */
-@Node
+
 public class BaseEntity {
-   public Integer getId() {
+   public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -26,7 +29,10 @@ public class BaseEntity {
         this.name = name;
     }
 
+
+
     @Id
-    private Integer id;
+    @GeneratedValue(generatorClass = UUIDStringGenerator.class)
+    private String id;
     private String name;
 }

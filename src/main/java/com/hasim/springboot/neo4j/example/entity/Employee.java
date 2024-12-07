@@ -10,7 +10,7 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 
 @Node
 public class Employee extends BaseEntity{
-    @Relationship(type = "HAS_POSITION", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type = "WITH_DESIGNATION", direction = Relationship.Direction.OUTGOING)
     private Position position;
 
    public Position getPosition() {
@@ -30,7 +30,7 @@ public class Employee extends BaseEntity{
     }
 
 
-    @Relationship(type = "BELONGS_TO", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type = "IS_PART_OF", direction = Relationship.Direction.OUTGOING)
     private Department department;
 
     public Employee getManager() {
@@ -41,7 +41,7 @@ public class Employee extends BaseEntity{
         this.manager = manager;
     }
 
-    @Relationship(type = "HAS_MANAGER", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type = "REPORTS_TO", direction = Relationship.Direction.OUTGOING)
     private Employee manager;
 
 }

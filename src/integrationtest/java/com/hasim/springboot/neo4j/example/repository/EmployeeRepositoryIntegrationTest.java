@@ -7,11 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
 
 import java.util.List;
+import java.util.UUID;
 
-import static com.hasim.springboot.neo4j.example.data.EntityFactory.createEmployee;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 @DataNeo4jTest
 public class EmployeeRepositoryIntegrationTest {
@@ -25,8 +23,9 @@ public class EmployeeRepositoryIntegrationTest {
         // Save an employee
         String managerName = "Mike";
         String name = "Alice";
-        Employee employee = EntityFactory.createEmployee(1,name,1,"SW",1,"IT");
-        Employee manager =EntityFactory.createEmployee(2,managerName,2,"MGR",1,"IT");
+        String posId = UUID.randomUUID().toString();
+        Employee employee = EntityFactory.createEmployee(UUID.randomUUID().toString(),name,UUID.randomUUID().toString(),"SW",posId,"IT");
+        Employee manager =EntityFactory.createEmployee(UUID.randomUUID().toString(),managerName,UUID.randomUUID().toString(),"MGR",posId,"IT");
         employee.setManager(manager);
         employeeRepository.save(employee);
 

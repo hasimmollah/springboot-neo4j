@@ -1,0 +1,18 @@
+namespace: app-dev-namespace
+app:
+  httpPort: 8080
+  host: app.dev-cluster.local
+  image:
+    version: latest
+ingress:
+  enabled: true
+neo4j:
+  username: neo4j
+  password: password
+  uri: neo4j://app-neo4j-external-service:7687
+  database: neo4j
+  host: host.docker.internal
+  loglevel: trace
+  boltPort: 7687
+
+    

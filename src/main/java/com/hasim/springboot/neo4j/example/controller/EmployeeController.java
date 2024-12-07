@@ -1,12 +1,12 @@
 package com.hasim.springboot.neo4j.example.controller;
 
+import com.hasim.springboot.neo4j.example.dto.DepartmentDto;
 import com.hasim.springboot.neo4j.example.dto.EmployeeDetails;
 import com.hasim.springboot.neo4j.example.dto.EmployeeDto;
 import com.hasim.springboot.neo4j.example.dto.EmployeeRequest;
+import com.hasim.springboot.neo4j.example.service.EmployeeFacade;
 import com.hasim.springboot.neo4j.example.service.EmployeeService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,23 +15,30 @@ import java.util.List;
  */
 @RestController
 public class EmployeeController {
-    private final EmployeeService employeeService;
-    EmployeeController(EmployeeService employeeService){
-        this.employeeService = employeeService;
+    private final EmployeeFacade employeeFacade;
+    EmployeeController(EmployeeFacade employeeFacade){
+        this.employeeFacade = employeeFacade;
     }
 
     @GetMapping("/employees/search")
     List<EmployeeDto> search(EmployeeRequest employeeRequest) {
-        return employeeService.search(employeeRequest);
+        return employeeFacade.search(employeeRequest);
     }
     @GetMapping("/employees")
     List<EmployeeDetails> employees() {
-        return employeeService.fetchEmployeeDetails();
+        return employeeFacade.fetchEmployeeDetails();
     }
 
 
     @GetMapping("/employees/{name}")
     List<EmployeeDto> employeesByName(@PathVariable("name") String name) {
-        return employeeService.findByName(name);
+        return employeeFacade.findByName(name);
+    }
+
+    @PostMapping("/employees/employee")
+    EmployeeDto save(@RequestBody EmployeeDto employeeDto) {
+        return employeeFacade.save(employeeDto);
     }
 }
+
+

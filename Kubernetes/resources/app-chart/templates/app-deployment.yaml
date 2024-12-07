@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: app # has to match .spec.template.metadata.labels
+  replicas: 2 # by default is 1
+  minReadySeconds: 10 # by default is 0
+  template:
+    metadata:
+      labels:
+        app: app # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: app
+        image:  hasim601/springboot-neo4j:{{ .Values.app.image.version }}
+        env:
+        - name: NEO4J_USER
+          valueFrom: 
+            secretKeyRef:
+              name: app-secret
+              key: NEO4J_USER		  
+        - name: NEO4J_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: app-secret
+              key: NEO4J_PASSWORD		  
+        - name: NEO4J_URI
+          valueFrom: 
+            configMapKeyRef:
+              name: app-config
+              key: NEO4J_URI		  
+        - name: NEO4J_DATABASE
+          valueFrom: 
+            configMapKeyRef:
+              name: app-config
+              key: NEO4J_DATABASE		  
+        - name: NEO4J_LOG_LEVEL
+          valueFrom: 
+            configMapKeyRef:
+              name: app-config
+              key: NEO4J_LOG_LEVEL		  
+        - name: APP_PORT                         # Refer a specific key
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: APP_PORT
+        

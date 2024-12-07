@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: {{ .Values.namespace }}
+data:
+  NEO4J_URI: "neo4j://{{ .Values.neo4j.host }}:{{ .Values.neo4j.boltPort }}"
+  NEO4J_DATABASE: "{{ .Values.neo4j.database }}"
+  NEO4J_LOG_LEVEL: "{{ .Values.neo4j.loglevel }}"
+  APP_PORT: "{{ .Values.app.httpPort }}"
